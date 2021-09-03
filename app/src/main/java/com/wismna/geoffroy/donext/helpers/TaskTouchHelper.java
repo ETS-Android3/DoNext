@@ -24,8 +24,8 @@ public class TaskTouchHelper extends ItemTouchHelper.SimpleCallback {
     }
 
     private final TaskTouchHelperAdapter mAdapter;
-    private int colorRight;
-    private int colorLeft;
+    private final int colorRight;
+    private final int colorLeft;
 
     public TaskTouchHelper(TaskTouchHelperAdapter adapter, int colorRight, int colorLeft){
         // No drag moves, no swipes (except for 1st element, see getSwipeDirs method)
@@ -38,7 +38,7 @@ public class TaskTouchHelper extends ItemTouchHelper.SimpleCallback {
     @Override
     public int getSwipeDirs(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         // Allow both directions swiping on first item, only left on the others
-        if (viewHolder.getAdapterPosition() == 0)
+        if (viewHolder.getAbsoluteAdapterPosition() == 0)
             return ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT;
         else return super.getSwipeDirs(recyclerView, viewHolder);
     }
@@ -50,7 +50,7 @@ public class TaskTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-        mAdapter.onItemSwiped(viewHolder.getAdapterPosition(), direction);
+        mAdapter.onItemSwiped(viewHolder.getAbsoluteAdapterPosition(), direction);
     }
 
     @Override

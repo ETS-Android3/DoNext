@@ -71,23 +71,20 @@ public class TaskListsDialogFragment extends DynamicDialogFragment implements
     public void onStart() {
         super.onStart();
         Button createTaskListButton = findViewById(R.id.new_task_list_button);
-        createTaskListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                EditText editText = findViewById(R.id.new_task_list_name);
-                String text = editText.getText().toString();
-                if (text.matches("")) {
-                    editText.setError(getResources().getString(R.string.task_list_new_list_error));
-                    return;
-                }
-                int position = taskListRecyclerViewAdapter.getItemCount();
-
-                TaskList taskList = taskListDataAccess.createTaskList(text, position);
-                taskListRecyclerViewAdapter.add(taskList, position);
-
-                editText.setText("");
-                toggleVisibleCreateNewTaskListLayout();
+        createTaskListButton.setOnClickListener(v -> {
+            EditText editText = findViewById(R.id.new_task_list_name);
+            String text = editText.getText().toString();
+            if (text.matches("")) {
+                editText.setError(getResources().getString(R.string.task_list_new_list_error));
+                return;
             }
+            int position = taskListRecyclerViewAdapter.getItemCount();
+
+            TaskList taskList = taskListDataAccess.createTaskList(text, position);
+            taskListRecyclerViewAdapter.add(taskList, position);
+
+            editText.setText("");
+            toggleVisibleCreateNewTaskListLayout();
         });
     }
 
@@ -127,7 +124,7 @@ public class TaskListsDialogFragment extends DynamicDialogFragment implements
         int taskListCount = taskListRecyclerViewAdapter.getItemCount();
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         String maxTaskListsString = sharedPref.getString("pref_conf_max_lists", "5");
-        int maxTaskLists = Integer.valueOf(maxTaskListsString);
+        int maxTaskLists = Integer.parseInt(maxTaskListsString);
         if (taskListCount >= maxTaskLists) layout.setVisibility(View.GONE);
         else layout.setVisibility(View.VISIBLE);
         clearFocus();
@@ -152,7 +149,7 @@ public class TaskListsDialogFragment extends DynamicDialogFragment implements
             args.putInt("ItemPosition", position);
             args.putLong("ItemId", id);
             confirmDialogFragment.setArguments(args);
-            confirmDialogFragment.show(Objects.requireNonNull(getFragmentManager()), title);
+            confirmDialogFragment.show(getParentFragmentManager(), title);
         }
         else deleteTaskList(position, id);
     }
@@ -196,7 +193,7 @@ public class TaskListsDialogFragment extends DynamicDialogFragment implements
     }
 
     private static class GetTaskListsTask extends AsyncTask<TaskListDataAccess, Void, List<TaskList>> {
-        private WeakReference<TaskListsDialogFragment> fragmentReference;
+        private final WeakReference<TaskListsDialogFragment> fragmentReference;
 
         GetTaskListsTask(TaskListsDialogFragment context) {
             fragmentReference = new WeakReference<>(context);

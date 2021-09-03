@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/task_select" >
+    android:background="@drawable/task_select">
     <TextView
         android:id="@+id/no_more_tasks"
         android:text="@string/task_no_tasks"
@@ -25,10 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start|bottom"
         android:layout_marginBottom="40dp"
-        android:drawableEnd="@drawable/ic_arrow_right_light"
         android:drawablePadding="10dp"
         android:gravity="center_vertical"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        app:drawableEndCompat="@drawable/ic_arrow_right_light" />
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/task_list_view"
         android:layout_width="match_parent"
@@ -70,12 +69,14 @@
             android:visibility="gone"/>
     </RelativeLayout>
     <View
+        android:id="@+id/main_additional_info_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginBottom="40dp"
         android:layout_gravity="bottom"
+        android:visibility="gone"
         android:background="@color/colorPrimaryLight"/>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="bottom"

@@ -40,6 +40,7 @@
     <string name="task_no_tasks">No tasks here!</string>
     <string name="task_alarm">Task is past due date</string>
     <string name="create_tasks">Create one there</string>
+    <string name="main_floating_button_desc">Create task</string>
 
     <!-- String related to the SnackBar -->
     <string name="snackabar_label">Task %s</string>
@@ -87,6 +88,7 @@
     <string name="incompatible_sdk_version">Sorry, your Android version is not supported.</string>
     <string name="today_no_tasks">Nothing to do today</string>
     <string name="today_create_tasks">Add some tasks there</string>
+    <string name="today_floating_button_desc">Create task</string>
 
     <!-- String related to History -->
     <string name="title_activity_history">History</string>

@@ -21,7 +21,6 @@ import org.joda.time.LocalDate;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Created by bg45 on 2017-03-21.
@@ -61,21 +60,18 @@ public class TodayFormDialogFragment extends DynamicDialogFragment {
     private void setLayoutValues(List<Task> tasks) {
         EditText editText = findViewById(R.id.today_search);
         final ListView listView = findViewById(R.id.today_tasks);
-        final TodayArrayAdapter adapter = new TodayArrayAdapter(Objects.requireNonNull(getActivity()), tasks);
+        final TodayArrayAdapter adapter = new TodayArrayAdapter(requireActivity(), tasks);
         listView.setAdapter(adapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Set Today date for the task
-                Task task = adapter.getItem(position);
-                if (task == null) return;
-                task.setTodayDate(task.isToday() ? "" : LocalDate.now().toString());
-                // Maintain a list of actually updated tasks to commit to DB
-                if (!mUpdatedTasks.contains(task)) mUpdatedTasks.add(task);
-                else mUpdatedTasks.remove(task);
-                // Refresh the view
-                adapter.notifyDataSetChanged();
-            }
+        listView.setOnItemClickListener((parent, view, position, id) -> {
+            // Set Today date for the task
+            Task task = adapter.getItem(position);
+            if (task == null) return;
+            task.setTodayDate(task.isToday() ? "" : LocalDate.now().toString());
+            // Maintain a list of actually updated tasks to commit to DB
+            if (!mUpdatedTasks.contains(task)) mUpdatedTasks.add(task);
+            else mUpdatedTasks.remove(task);
+            // Refresh the view
+            adapter.notifyDataSetChanged();
         });
         editText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -114,7 +110,7 @@ public class TodayFormDialogFragment extends DynamicDialogFragment {
     }
 
      static class LoadTasks extends AsyncTask<Context, Void, List<Task>> {
-        private WeakReference<TodayFormDialogFragment> fragmentReference;
+        private final WeakReference<TodayFormDialogFragment> fragmentReference;
 
         LoadTasks(TodayFormDialogFragment context) {
             fragmentReference = new WeakReference<>(context);
@@ -135,7 +131,7 @@ public class TodayFormDialogFragment extends DynamicDialogFragment {
     }
 
     private static class UpdateTasks extends AsyncTask<Task, Void, Integer> {
-        private WeakReference<TodayFormDialogFragment> fragmentReference;
+        private final WeakReference<TodayFormDialogFragment> fragmentReference;
 
         UpdateTasks(TodayFormDialogFragment context) {
             fragmentReference = new WeakReference<>(context);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -76,27 +75,16 @@ public abstract class DynamicDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         // Add action buttons
         builder.setView(view)
-                .setNegativeButton(mNegativeButtonString, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the negative button event back to the host activity
-                        // Canceled creation, nothing to do
-                        onNegativeButtonClick();
-                    }
+                .setNegativeButton(mNegativeButtonString, (dialog, id) -> {
+                    // Send the negative button event back to the host activity
+                    // Canceled creation, nothing to do
+                    onNegativeButtonClick();
                 });
         if (mButtonCount >= 2) {
-            builder.setPositiveButton(mPositiveButtonString, new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    onPositiveButtonClick(view);
-                }
-            });
+            builder.setPositiveButton(mPositiveButtonString, (dialog, id) -> onPositiveButtonClick(view));
         }
         if (mButtonCount == 3) {
-            builder.setNeutralButton(mNeutralButtonString, new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    onNeutralButtonClick(view);
-                }
-            });
+            builder.setNeutralButton(mNeutralButtonString, (dialog, which) -> onNeutralButtonClick(view));
         }
         setToolbarTitle(view);
         insertContentView(view, inflater);
@@ -104,13 +92,13 @@ public abstract class DynamicDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(Menu menu, @NonNull MenuInflater inflater) {
         menu.clear();
-        Objects.requireNonNull(getActivity()).getMenuInflater().inflate(R.menu.menu_dynamic_fragment, menu);
+        requireActivity().getMenuInflater().inflate(R.menu.menu_dynamic_fragment, menu);
     }
 
     @Override
-    public void onPrepareOptionsMenu(Menu menu) {
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
         /*switch (mButtonCount) {
             case 1:
                 menu.removeItem(R.id.menu_positive_button);
@@ -148,7 +136,7 @@ public abstract class DynamicDialogFragment extends DialogFragment {
 
         // Hide the keyboard if present
         if (view != null) {
-            InputMethodManager imm = (InputMethodManager) Objects.requireNonNull(getActivity()).getSystemService(Activity.INPUT_METHOD_SERVICE);
+            InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
             assert imm != null;
             imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         }
@@ -200,8 +188,8 @@ public abstract class DynamicDialogFragment extends DialogFragment {
 
     /** Helper function to get a View, without having to worry about the fact that is a Dialog or not*/
     protected <T extends View> T findViewById(int id) {
-        if (getShowsDialog()) return getDialog().findViewById(id);
-        return Objects.requireNonNull(getView()).findViewById(id);
+        if (getShowsDialog()) return requireDialog().findViewById(id);
+        return requireView().findViewById(id);
     }
 
 
@@ -212,7 +200,7 @@ public abstract class DynamicDialogFragment extends DialogFragment {
             view.requestFocus();
 
             // Hide keyboard
-            InputMethodManager inputMethodManager = (InputMethodManager) Objects.requireNonNull(getContext()).getSystemService(Context.INPUT_METHOD_SERVICE);
+            InputMethodManager inputMethodManager = (InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
             Objects.requireNonNull(inputMethodManager).hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }

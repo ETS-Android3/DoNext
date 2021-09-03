@@ -24,7 +24,7 @@ public class TaskListTouchHelper extends ItemTouchHelper.SimpleCallback  {
 
     @Override
     public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-        return mAdapter.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+        return mAdapter.onItemMove(viewHolder.getAbsoluteAdapterPosition(), target.getAbsoluteAdapterPosition());
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.wismna.geoffroy.donext.adapters;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -15,13 +16,14 @@ import java.util.List;
  */
 public class SectionsPagerAdapter extends SmartFragmentStatePagerAdapter {
 
-    private List<TaskList> taskLists;
+    private final List<TaskList> taskLists;
 
     public SectionsPagerAdapter(FragmentManager fm, List<TaskList> taskLists) {
         super(fm);
         this.taskLists = taskLists;
     }
 
+    @NonNull
     @Override
     public Fragment getItem(int position) {
         // getItem is called to instantiate the fragment for the given page.

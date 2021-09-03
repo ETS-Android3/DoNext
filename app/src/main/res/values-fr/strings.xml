@@ -70,4 +70,6 @@
     <string name="create_tasks">Créez-en une là</string>
     <string name="today_create_tasks">Ajoutez des tâches là</string>
     <string name="new_task_restore">Restaurer</string>
+    <string name="today_floating_button_desc">Créer une tâche</string>
+    <string name="main_floating_button_desc">Créer une tâche</string>
 </resources>

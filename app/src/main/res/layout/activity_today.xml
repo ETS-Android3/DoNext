@@ -22,7 +22,7 @@
             android:textSize="24sp"/>
     </com.google.android.material.appbar.AppBarLayout>
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:name="com.wismna.geoffroy.donext.fragments.TasksFragment"
         android:id="@+id/fragment_task_list"
         android:layout_width="match_parent"
@@ -37,6 +37,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/fab_margin"
         android:onClick="onNewTaskClick"
-        android:src="@drawable/ic_add" />
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/today_floating_button_desc" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

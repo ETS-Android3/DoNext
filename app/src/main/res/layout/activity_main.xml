@@ -7,7 +7,7 @@
     android:fitsSystemWindows="true"
     tools:context=".activities.MainActivity">
 
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,6 +21,7 @@
         android:layout_gravity="end|bottom"
         android:layout_margin="16dp"
         android:onClick="onNewTaskClick"
-        android:src="@drawable/ic_add" />
+        android:src="@drawable/ic_add"
+        android:contentDescription="@string/main_floating_button_desc" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

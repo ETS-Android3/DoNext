@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/main_content"
     tools:context="com.wismna.geoffroy.donext.activities.HistoryActivity">
-    <fragment
+    <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -19,7 +19,6 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -125,88 +124,84 @@ public class TasksFragment extends Fragment implements
         final Resources resources = getResources();
         // Implements touch listener to add click detection
         recyclerView.addOnItemTouchListener(
-                new RecyclerItemClickListener(context, new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        boolean isLargeLayout = resources.getBoolean(R.bool.large_layout);
-                        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-                        Bundle args = new Bundle();
-                        args.putBoolean("today", sharedPref.getBoolean("pref_conf_today_enable", false));
-                        args.putInt("button_count", isHistory ? 1 : 3);
-                        args.putString("button_positive", getString(R.string.new_task_save));
-                        args.putString("button_negative",
-                                isHistory ? getString(R.string.task_list_ok) : getString(R.string.new_task_cancel));
-                        args.putString("button_neutral", getString(R.string.new_task_delete));
-                        args.putInt("position", position);
+                new RecyclerItemClickListener(context, (view, position) -> {
+                    boolean isLargeLayout = resources.getBoolean(R.bool.large_layout);
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    Bundle args = new Bundle();
+                    args.putBoolean("today", sharedPref.getBoolean("pref_conf_today_enable", false));
+                    args.putInt("button_count", isHistory ? 1 : 3);
+                    args.putString("button_positive", getString(R.string.new_task_save));
+                    args.putString("button_negative",
+                            isHistory ? getString(R.string.task_list_ok) : getString(R.string.new_task_cancel));
+                    args.putString("button_neutral", getString(R.string.new_task_delete));
+                    args.putInt("position", position);
 
-                        // Set current tab value to new task dialog
-                        ViewPager viewPager = Objects.requireNonNull(getActivity()).findViewById(R.id.container);
-                        List<TaskList> taskLists;
-                        Task task = taskRecyclerViewAdapter.getItem(position);
-                        if (viewPager != null) {
-                            taskLists = ((SectionsPagerAdapter) Objects.requireNonNull(viewPager.getAdapter())).getAllItems();
-                            args.putInt("list", viewPager.getCurrentItem());
-                        }
-                        else {
-                            try (TaskListDataAccess taskListDataAccess = new TaskListDataAccess(getActivity())) {
-                                taskLists = taskListDataAccess.getTaskLists(isHistory);
-                            }
-                            for (TaskList taskList :
-                                    taskLists) {
-                                if (taskList.getId() == task.getTaskListId()) {
-                                    args.putInt("list", taskLists.indexOf(taskList));
-                                    break;
-                                }
-                            }
-                        }
-
-                        FragmentManager manager = getFragmentManager();
-                        TaskFormDialogFragment taskDialogFragment = TaskFormDialogFragment.newInstance(
-                                task, taskLists, TasksFragment.this);
-                        taskDialogFragment.setArguments(args);
-
-                        // Open the fragment as a dialog or as full-screen depending on screen size
-                        assert manager != null;
-                        taskDialogFragment.showFragment(manager,
-                                getString(isHistory ? R.string.action_view_task : R.string.action_edit_task), isLargeLayout);
+                    // Set current tab value to new task dialog
+                    ViewPager viewPager = requireActivity().findViewById(R.id.container);
+                    List<TaskList> taskLists;
+                    Task task = taskRecyclerViewAdapter.getItem(position);
+                    if (viewPager != null) {
+                        taskLists = ((SectionsPagerAdapter) Objects.requireNonNull(viewPager.getAdapter())).getAllItems();
+                        args.putInt("list", viewPager.getCurrentItem());
                     }
+                    else {
+                        try (TaskListDataAccess taskListDataAccess = new TaskListDataAccess(getActivity())) {
+                            taskLists = taskListDataAccess.getTaskLists(isHistory);
+                        }
+                        for (TaskList taskList :
+                                taskLists) {
+                            if (taskList.getId() == task.getTaskListId()) {
+                                args.putInt("list", taskLists.indexOf(taskList));
+                                break;
+                            }
+                        }
+                    }
+
+                    FragmentManager manager = getParentFragmentManager();
+                    TaskFormDialogFragment taskDialogFragment = TaskFormDialogFragment.newInstance(
+                            task, taskLists, TasksFragment.this);
+                    taskDialogFragment.setArguments(args);
+
+                    // Open the fragment as a dialog or as full-screen depending on screen size
+                    taskDialogFragment.showFragment(manager,
+                            getString(isHistory ? R.string.action_view_task : R.string.action_edit_task), isLargeLayout);
                 })
         );
 
         // Handle updating total counts in a listener to be sure that the layout is available
-        recyclerView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-            @Override
-            public boolean onPreDraw() {
-                // isAdded is tested to prevent an IllegalStateException when fast switching between tabs
-                if (!isAdded()) return true;
-                Resources resources = getResources();
+        recyclerView.getViewTreeObserver().addOnPreDrawListener(() -> {
+            // isAdded is tested to prevent an IllegalStateException when fast switching between tabs
+            if (!isAdded()) return true;
+            Resources resources1 = getResources();
 
-                // Update total cycle count
-                int totalCycles = taskRecyclerViewAdapter.getCycleCount();
-                TextView totalCyclesView = view.findViewById(R.id.total_task_cycles);
-                if (totalCycles != 0)
-                    totalCyclesView.setText(resources.getQuantityString(R.plurals.task_total_cycles, totalCycles, totalCycles));
-                else totalCyclesView.setText("");
+            // Update total cycle count
+            int totalCycles = taskRecyclerViewAdapter.getCycleCount();
+            TextView totalCyclesView = view.findViewById(R.id.total_task_cycles);
+            if (totalCycles != 0)
+                totalCyclesView.setText(resources1.getQuantityString(R.plurals.task_total_cycles, totalCycles, totalCycles));
+            else totalCyclesView.setText("");
 
-                // Update total tasks
-                int totalTasks = taskRecyclerViewAdapter.getItemCount();
-                TextView totalTasksView = view.findViewById(R.id.total_task_count);
-                View noMoreTasks = view.findViewById(R.id.no_more_tasks);
-                View createTasks = view.findViewById(R.id.create_tasks);
-                if (totalTasks == 0) {
-                    noMoreTasks.setVisibility(View.VISIBLE);
-                    createTasks.setVisibility(View.VISIBLE);
-                    totalTasksView.setVisibility(View.GONE);
-                }
-                else {
-                    noMoreTasks.setVisibility(View.GONE);
-                    createTasks.setVisibility(View.GONE);
-                    totalTasksView.setVisibility(View.VISIBLE);
-                    totalTasksView.setText(resources.getQuantityString(R.plurals.task_total, totalTasks, totalTasks));
-                }
-
-                return true;
+            // Update total tasks
+            int totalTasks = taskRecyclerViewAdapter.getItemCount();
+            View separator = view.findViewById(R.id.main_additional_info_separator);
+            TextView totalTasksView = view.findViewById(R.id.total_task_count);
+            View noMoreTasks = view.findViewById(R.id.no_more_tasks);
+            View createTasks = view.findViewById(R.id.create_tasks);
+            if (totalTasks == 0) {
+                noMoreTasks.setVisibility(View.VISIBLE);
+                createTasks.setVisibility(View.VISIBLE);
+                totalTasksView.setVisibility(View.GONE);
+                separator.setVisibility(View.GONE);
             }
+            else {
+                noMoreTasks.setVisibility(View.GONE);
+                createTasks.setVisibility(View.GONE);
+                totalTasksView.setVisibility(View.VISIBLE);
+                separator.setVisibility(View.VISIBLE);
+                totalTasksView.setText(resources1.getQuantityString(R.plurals.task_total, totalTasks, totalTasks));
+            }
+
+            return true;
         });
 
         //recyclerView.addItemDecoration(new DividerItemDecoration(getActivity()));
@@ -227,7 +222,7 @@ public class TasksFragment extends Fragment implements
         int direction = args.getInt("Direction");
 
         // Handle never ask again checkbox
-        CheckBox neverAskAgainCheckBox = dialog.getDialog().findViewById(R.id.task_confirmation_never);
+        CheckBox neverAskAgainCheckBox = Objects.requireNonNull(dialog.getDialog()).findViewById(R.id.task_confirmation_never);
         if (neverAskAgainCheckBox.isChecked()) {
 
             SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -344,10 +339,8 @@ public class TasksFragment extends Fragment implements
             confirmArgs.putInt("ItemPosition", itemPosition);
             confirmArgs.putInt("Direction", -1);
             confirmDialogFragment.setArguments(confirmArgs);
-            FragmentManager fragmentManager = getFragmentManager();
-            if (fragmentManager != null) {
-                confirmDialogFragment.show(fragmentManager, title);
-            }
+            FragmentManager fragmentManager = getParentFragmentManager();
+            confirmDialogFragment.show(fragmentManager, title);
         }
         else {
             PerformTaskAction(itemPosition, -1);
@@ -385,10 +378,8 @@ public class TasksFragment extends Fragment implements
             args.putInt("ItemPosition", itemPosition);
             args.putInt("Direction", direction);
             confirmDialogFragment.setArguments(args);
-            FragmentManager fragmentManager = getFragmentManager();
-            if (fragmentManager != null) {
-                confirmDialogFragment.show(fragmentManager, title);
-            }
+            FragmentManager fragmentManager = getParentFragmentManager();
+            confirmDialogFragment.show(fragmentManager, title);
         }
         else PerformTaskAction(itemPosition, direction);
     }
@@ -415,7 +406,7 @@ public class TasksFragment extends Fragment implements
                 taskRecyclerViewAdapter.add(task, taskRecyclerViewAdapter.getItemCount());
                 break;
             case -1:
-                FragmentManager manager = getFragmentManager();
+                FragmentManager manager = getParentFragmentManager();
                 DialogFragment dialog = (DialogFragment) Objects.requireNonNull(manager).findFragmentByTag(getString(R.string.action_edit_task));
                 if (dialog != null) dialog.dismiss();
                 action = resources.getString(R.string.snackabar_action_deleted);
@@ -423,29 +414,26 @@ public class TasksFragment extends Fragment implements
         }
 
         // Setup the snack bar
-        View parentView = Objects.requireNonNull(getActivity()).findViewById(R.id.main_content);
+        View parentView = requireActivity().findViewById(R.id.main_content);
         snackbar = Snackbar.make(parentView, resources.getString(R.string.snackabar_label, action), Snackbar.LENGTH_LONG)
-                .setAction(resources.getString(R.string.snackabar_button), new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Undo adapter changes
-                        switch (direction) {
-                            // Nothing special to do for done
-                            case ItemTouchHelper.LEFT:
-                                break;
-                            // Remove the last item
-                            case ItemTouchHelper.RIGHT:
-                                taskRecyclerViewAdapter.remove(taskRecyclerViewAdapter.getItemCount() - 1);
-                                task.setCycle(task.getCycle() - 1);
-                                break;
-                            // Nothing special to do for delete
-                            case -1:
-                                break;
-                        }
-                        // Reset the first item
-                        taskRecyclerViewAdapter.add(task, itemPosition);
-                        recyclerView.scrollToPosition(0);
+                .setAction(resources.getString(R.string.snackabar_button), v -> {
+                    // Undo adapter changes
+                    switch (direction) {
+                        // Nothing special to do for done
+                        case ItemTouchHelper.LEFT:
+                            break;
+                        // Remove the last item
+                        case ItemTouchHelper.RIGHT:
+                            taskRecyclerViewAdapter.remove(taskRecyclerViewAdapter.getItemCount() - 1);
+                            task.setCycle(task.getCycle() - 1);
+                            break;
+                        // Nothing special to do for delete
+                        case -1:
+                            break;
                     }
+                    // Reset the first item
+                    taskRecyclerViewAdapter.add(task, itemPosition);
+                    recyclerView.scrollToPosition(0);
                 });
         snackbar.addCallback(new Snackbar.Callback() {
             @Override
