@@ -77,8 +77,7 @@ public class TaskFormDialogFragment extends DynamicDialogFragment {
         super.onStart();
         // Set Task Form specific information at that point because we are sure that the view is
         // entirely inflated (with the content fragment)
-        Activity activity = getActivity();
-        assert activity != null;
+        Activity activity = requireActivity();
         if (activity instanceof HistoryActivity) {
             InterceptTouchRelativeLayout layout = findViewById(R.id.new_task_layout);
             layout.setInterceptTouchEvents(true);

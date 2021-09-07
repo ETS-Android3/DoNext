@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".activities.MainActivity">
-
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:name="com.wismna.geoffroy.donext.fragments.MainFragment"
-        />
-
+        android:name="com.wismna.geoffroy.donext.fragments.MainFragment" />
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -23,5 +21,4 @@
         android:onClick="onNewTaskClick"
         android:src="@drawable/ic_add"
         android:contentDescription="@string/main_floating_button_desc" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

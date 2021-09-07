@@ -45,8 +45,7 @@ public abstract class DynamicDialogFragment extends DialogFragment {
         // This part is only needed on small layouts (large layouts use onCreateDialog)
         if (!getShowsDialog()) {
             View view = inflater.inflate(R.layout.fragment_dynamic_dialog, container, false);
-            AppCompatActivity activity = (AppCompatActivity) getActivity();
-            assert activity != null;
+            AppCompatActivity activity = (AppCompatActivity) requireActivity();
             activity.setSupportActionBar(setToolbarTitle(view));
 
             ActionBar actionBar = activity.getSupportActionBar();
@@ -67,8 +66,7 @@ public abstract class DynamicDialogFragment extends DialogFragment {
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Inflate and set the layout for the dialog
-        Activity activity = getActivity();
-        assert activity != null;
+        Activity activity = requireActivity();
         LayoutInflater inflater = activity.getLayoutInflater();
         // As it is a Dialog, the root ViewGroup can be null without issues
         final View view = inflater.inflate(R.layout.fragment_dynamic_dialog, null);
@@ -137,7 +135,6 @@ public abstract class DynamicDialogFragment extends DialogFragment {
         // Hide the keyboard if present
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE);
-            assert imm != null;
             imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
         }
         if (id == R.id.menu_positive_button) {

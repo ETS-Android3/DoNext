@@ -7,7 +7,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context=".activities.TodayActivity">
-
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,9 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:textAlignment="center"
-            android:textSize="24sp"/>
+            android:textSize="24sp" />
     </com.google.android.material.appbar.AppBarLayout>
-
     <androidx.fragment.app.FragmentContainerView
         android:name="com.wismna.geoffroy.donext.fragments.TasksFragment"
         android:id="@+id/fragment_task_list"
@@ -29,7 +27,6 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:layout="@layout/fragment_tasks" />
-
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
@@ -39,5 +36,4 @@
         android:onClick="onNewTaskClick"
         android:src="@drawable/ic_add"
         android:contentDescription="@string/today_floating_button_desc" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

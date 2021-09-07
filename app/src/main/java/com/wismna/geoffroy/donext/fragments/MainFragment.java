@@ -1,27 +1,26 @@
 package com.wismna.geoffroy.donext.fragments;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
-import android.graphics.Point;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Guideline;
 import com.google.android.material.tabs.TabLayout;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.wismna.geoffroy.donext.R;
 import com.wismna.geoffroy.donext.activities.HistoryActivity;
 import com.wismna.geoffroy.donext.adapters.SectionsPagerAdapter;
@@ -40,15 +39,14 @@ public class MainFragment extends Fragment implements
         TaskListsDialogFragment.TaskListsListener {
 
     private View mView;
-    private ViewPager mViewPager;
+    private ViewPager2 mViewPager;
     private SectionsPagerAdapter mSectionsPagerAdapter;
-    private TabLayout tabLayout;
 
     public MainFragment() {
         // Required empty public constructor
     }
 
-    public ViewPager getViewPager() {
+    public ViewPager2 getViewPager() {
         return mViewPager;
     }
 
@@ -59,13 +57,19 @@ public class MainFragment extends Fragment implements
         mView = inflater.inflate(R.layout.fragment_main, container, false);
         Toolbar toolbar = mView.findViewById(R.id.toolbar);
 
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        assert activity != null;
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
         activity.setSupportActionBar(toolbar);
+        if (activity instanceof HistoryActivity) {
+            ActionBar actionBar = activity.getSupportActionBar();
+
+            // Show back button on toolbar
+            assert actionBar != null;
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowHomeEnabled(true);
+        }
 
         // Get preferences
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(activity);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(activity);
 
         // Check if this is the first time loading this app
         boolean first_time = sharedPref.getBoolean("first_time", true);
@@ -97,8 +101,7 @@ public class MainFragment extends Fragment implements
         // No tabs exist yet, nothing to save
         if (mViewPager == null) return;
         // Otherwise, save currently opened tab
-        SharedPreferences sharedPref =
-                PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putInt("last_opened_tab", mViewPager.getCurrentItem());
         editor.apply();
@@ -112,8 +115,7 @@ public class MainFragment extends Fragment implements
 
     @Override
     public void onTaskListsDialogNegativeClick() {
-        AppCompatActivity activity = (AppCompatActivity) getActivity();
-        assert activity != null;
+        AppCompatActivity activity = (AppCompatActivity) requireActivity();
         updateTaskLists(activity);
     }
 
@@ -126,8 +128,7 @@ public class MainFragment extends Fragment implements
 
             // Create the adapter that will return a fragment for each of the three
             // primary sections of the activity.
-            mSectionsPagerAdapter = new SectionsPagerAdapter(getParentFragmentManager(), taskLists);
-            mSectionsPagerAdapter.notifyDataSetChanged();
+            mSectionsPagerAdapter = new SectionsPagerAdapter(this, taskLists);
         }
 
         // Set up the ViewPager with the sections adapter.
@@ -136,16 +137,17 @@ public class MainFragment extends Fragment implements
 
         if (!getResources().getBoolean(R.bool.large_layout)) {
 
-            tabLayout = mView.findViewById(R.id.tabs);
+            TabLayout tabLayout = mView.findViewById(R.id.tabs);
             // Hide the tabs if there is only one task list
             tabLayout.setVisibility(taskLists.size() == 1 && !isHistoryActivity ? View.GONE : View.VISIBLE);
-            tabLayout.setupWithViewPager(mViewPager);
+            //tabLayout.setupWithViewPager(mViewPager);
+            new TabLayoutMediator(tabLayout, mViewPager,
+                    (tab, position) -> tab.setText(mSectionsPagerAdapter.getAllItems().get(position).getName())
+            ).attach();
 
             // Handles scroll detection (only available for SDK version >=23)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                toggleTabLayoutArrows(tabLayout.getScrollX());
-                //tabLayout.setScrollIndicators(TabLayout.SCROLL_INDICATOR_LEFT | TabLayout.SCROLL_INDICATOR_RIGHT);
-                tabLayout.setOnScrollChangeListener((v, scrollX, scrollY, oldScrollX, oldScrollY) -> toggleTabLayoutArrows(scrollX));
+                tabLayout.setScrollIndicators(TabLayout.SCROLL_INDICATOR_LEFT | TabLayout.SCROLL_INDICATOR_RIGHT);
             }
         }
         else {
@@ -164,33 +166,13 @@ public class MainFragment extends Fragment implements
     }
 
     private TaskRecyclerViewAdapter getSpecificTabAdapter(int position) {
-        TasksFragment taskFragment = (TasksFragment) mSectionsPagerAdapter.getRegisteredFragment(position);
-        if (taskFragment == null) return null;
+        //TasksFragment taskFragment = (TasksFragment) mSectionsPagerAdapter.getRegisteredFragment(position);
+        TasksFragment taskFragment = (TasksFragment) mSectionsPagerAdapter.createFragment(position);
+        //if (taskFragment == null) return null;
         View view = taskFragment.getView();
         if (view == null) return null;
         RecyclerView recyclerView = view.findViewById(R.id.task_list_view);
         if (recyclerView == null) return null;
         return (TaskRecyclerViewAdapter) recyclerView.getAdapter();
-    }
-
-    /** Toggles scrolling arrows visibility */
-    private void toggleTabLayoutArrows(int scrollX){
-        // Hide left arrow when scrolled to the left
-        View leftArrow = mView.findViewById(R.id.left_arrow);
-        if (leftArrow != null) {
-            if (scrollX <= 1) leftArrow.setVisibility(View.INVISIBLE);
-            else leftArrow.setVisibility(View.VISIBLE);
-        }
-        // Hide right arrow when scrolled to the right
-        View rightArrow = mView.findViewById(R.id.right_arrow);
-        if (rightArrow != null) {
-            Point size = new Point();
-            Activity activity = getActivity();
-            assert activity != null;
-            activity.getWindowManager().getDefaultDisplay().getSize(size);
-            if (scrollX == tabLayout.getChildAt(0).getMeasuredWidth() - tabLayout.getMeasuredWidth())
-                rightArrow.setVisibility(View.INVISIBLE);
-            else rightArrow.setVisibility(View.VISIBLE);
-        }
     }
 }

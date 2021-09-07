@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.content.ContextCompat;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -137,7 +137,7 @@ public class TasksFragment extends Fragment implements
                     args.putInt("position", position);
 
                     // Set current tab value to new task dialog
-                    ViewPager viewPager = requireActivity().findViewById(R.id.container);
+                    ViewPager2 viewPager = requireActivity().findViewById(R.id.container);
                     List<TaskList> taskLists;
                     Task task = taskRecyclerViewAdapter.getItem(position);
                     if (viewPager != null) {
@@ -216,8 +216,7 @@ public class TasksFragment extends Fragment implements
 
     @Override
     public void onConfirmDialogClick(DialogFragment dialog, ConfirmDialogFragment.ButtonEvent event) {
-        Bundle args = dialog.getArguments();
-        assert args != null;
+        Bundle args = dialog.requireArguments();
         int itemPosition = args.getInt("ItemPosition");
         int direction = args.getInt("Direction");
 
@@ -323,10 +322,9 @@ public class TasksFragment extends Fragment implements
     public void onNewTaskDialogNeutralClick(DialogFragment dialog) {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         boolean showDialog = sharedPref.getBoolean("pref_conf_del", true);
-        Bundle args = dialog.getArguments();
+        Bundle args = dialog.requireArguments();
 
         // Delete task from Adapter
-        assert args != null;
         final int itemPosition = args.getInt("position");
 
         if (showDialog) {

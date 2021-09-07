@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,13 +60,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.action_changeLayout) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            SharedPreferences.Editor editor = sharedPref.edit();
+            String layoutTypeString = sharedPref.getString("pref_conf_task_layout", "1");
+            int layoutType = Integer.parseInt(layoutTypeString);
+            editor.putString("pref_conf_task_layout", String.valueOf(layoutType % 2 + 1));
+            editor.apply();
 
-        return id == R.id.action_settings || super.onOptionsItemSelected(item);
+            // Update the ViewPagerAdapter to refresh all tabs
+            ViewPager2 viewPager = getMainFragmentViewPager();
+            if (viewPager != null)
+            {
+                viewPager.getAdapter().notifyDataSetChanged();
+            }
+            return true;
+        }
+        return false;
     }
 
     /** Called when the user clicks on the Today List button */
@@ -109,14 +122,14 @@ public class MainActivity extends AppCompatActivity {
 
     /** Called when user clicks on the New Task floating button */
     public void onNewTaskClick(View view) {
-        ViewPager viewPager = getMainFragmentViewPager();
+        ViewPager2 viewPager = getMainFragmentViewPager();
         if (viewPager == null) return;
         int currentTabPosition = viewPager.getCurrentItem();
         SectionsPagerAdapter pagerAdapter = (SectionsPagerAdapter) viewPager.getAdapter();
         assert pagerAdapter != null;
         TaskFormDialogFragment taskDialogFragment = TaskFormDialogFragment.newInstance(null,
                 pagerAdapter.getAllItems(),
-                (TasksFragment) pagerAdapter.getRegisteredFragment(currentTabPosition));
+                (TasksFragment) pagerAdapter.createFragment(currentTabPosition));
 
         // Set some configuration values for the tab
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
@@ -135,7 +148,7 @@ public class MainActivity extends AppCompatActivity {
                 getString(R.string.action_new_task), getResources().getBoolean(R.bool.large_layout));
     }
 
-    private ViewPager getMainFragmentViewPager(){
+    private ViewPager2 getMainFragmentViewPager(){
         FragmentManager manager = getSupportFragmentManager();
         MainFragment fragment = (MainFragment)manager.findFragmentById(R.id.fragment_main);
         return fragment != null ? fragment.getViewPager() : null;

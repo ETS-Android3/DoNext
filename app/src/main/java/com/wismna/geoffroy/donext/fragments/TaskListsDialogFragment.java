@@ -169,8 +169,7 @@ public class TaskListsDialogFragment extends DynamicDialogFragment implements
 
         if (event == ConfirmDialogFragment.ButtonEvent.NO) return;
 
-        Bundle args = dialog.getArguments();
-        assert args != null;
+        Bundle args = dialog.requireArguments();
         deleteTaskList(args.getInt("ItemPosition"), args.getLong("ItemId"));
     }
 

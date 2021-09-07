@@ -43,11 +43,10 @@ public class ConfirmDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-        Bundle args = getArguments();
+        Bundle args = requireArguments();
         LayoutInflater inflater = requireActivity().getLayoutInflater();
         // No need for a parent in a Dialog Fragment
         View view = inflater.inflate(R.layout.fragment_task_confirmation, null);
-        assert args != null;
         builder.setView(view).setMessage(args.getString("message"))
             .setPositiveButton(args.getInt("button"), (dialog, id) -> confirmDialogListener.onConfirmDialogClick(ConfirmDialogFragment.this, ButtonEvent.YES))
             .setNegativeButton(R.string.task_confirmation_no_button, (dialog, id) -> {

@@ -3,13 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.MainActivity">
     <item
-        android:id="@+id/action_todayList"
+        android:id="@+id/action_changeLayout"
         android:orderInCategory="05"
+        android:title="@string/action_changeLayout"
+        android:icon="@drawable/ic_format_size_dark"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_todayList"
+        android:orderInCategory="10"
         android:title="@string/action_todayList"
         android:onClick="showTodayList"
         android:icon="@drawable/ic_today_dark"
-        android:visible="false"
         app:showAsAction="ifRoom" />
+
     <item
         android:id="@+id/action_editTabs"
         android:orderInCategory="15"

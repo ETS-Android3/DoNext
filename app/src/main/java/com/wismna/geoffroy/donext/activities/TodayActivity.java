@@ -3,6 +3,9 @@ package com.wismna.geoffroy.donext.activities;
 import android.os.Build;
 import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -20,7 +23,7 @@ import org.joda.time.LocalDate;
 import java.util.Locale;
 import java.util.Objects;
 
-public class TodayActivity extends ToolBarActivityBase
+public class TodayActivity extends AppCompatActivity
     implements TodayFormDialogFragment.TodayTaskListener {
 
     @Override
@@ -30,20 +33,25 @@ public class TodayActivity extends ToolBarActivityBase
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        initToolBar();
+        ActionBar actionBar = getSupportActionBar();
+
+        // Show back button on toolbar
+        assert actionBar != null;
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
 
         // Show the date
         TextView date = findViewById(R.id.today_date);
         date.setText(LocalDate.now().toString("EEEE, dd MMMM yyyy", getCurrentLocale()));
 
         // Set the no tasks texts
-        TextView noTasks = findViewById(R.id.no_more_tasks);
+        /*TextView noTasks = findViewById(R.id.no_more_tasks);
         noTasks.setText(R.string.today_no_tasks);
         noTasks.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_smiley_satisfied_light, 0);
         noTasks.setCompoundDrawablePadding(10);
 
         TextView createTasks = findViewById(R.id.create_tasks);
-        createTasks.setText(R.string.today_create_tasks);
+        createTasks.setText(R.string.today_create_tasks);*/
     }
 
     @Override
