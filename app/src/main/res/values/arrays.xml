@@ -9,9 +9,10 @@
         <item>6</item>
         <item>7</item>
     </string-array>
-    <string-array name="settings_task_layouts">
-        <item>Simple</item>
-        <item>Detailed</item>
+    <string-array name="settings_theme">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>System</item>
     </string-array>
     <string-array name="settings_task_layout_values" translatable="false">
         <item>1</item>
@@ -21,5 +22,15 @@
         <item>Low</item>
         <item>Medium</item>
         <item>High</item>
+    </string-array>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>Reply</item>
+        <item>Reply to all</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>reply</item>
+        <item>reply_all</item>
     </string-array>
 </resources>

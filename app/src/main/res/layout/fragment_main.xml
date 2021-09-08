@@ -16,8 +16,6 @@
         android:id="@+id/tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/left_arrow"
-        android:layout_toStartOf="@+id/right_arrow"
         app:tabMode="scrollable" />
     </com.google.android.material.appbar.AppBarLayout>
     <androidx.viewpager2.widget.ViewPager2

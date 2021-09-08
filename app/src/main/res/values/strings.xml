@@ -60,16 +60,14 @@
     <string name="task_confirmation_never_button">Never ask again</string>
 
     <!-- Strings related to Settings -->
-    <string name="settings_category_tasks">Tasks</string>
+    <string name="settings_category_notifications">Notifications</string>
     <string name="settings_category_tasklists">Task lists</string>
     <string name="settings_confirm_donext">Confirm on next?</string>
     <string name="settings_confirm_markdone">Confirm on done?</string>
-    <string name="settings_confirm_delete">Confirm on delete?</string>
-    <string name="settings_task_layout">Task layout</string>
-    <string name="settings_today_title">Today view</string>
-    <string name="settings_today_enable">Enable Today view?</string>
-    <string name="settings_today_desc">The Today view is a special way of showing your tasks. Select which tasks you want to do during the day and they will show up in this view. At the end of the day, the view is reset.</string>
+    <string name="settings_confirm_task_delete">Confirm on task delete?</string>
+    <string name="settings_confirm_list_delete">Confirm on list delete?</string>
     <string name="settings_max_lists_label">Maximum number of lists</string>
+    <string name="settings_theme">Theme</string>
     <string name="default_task_list_name">My tasks</string>
 
     <!-- Strings related to About -->
@@ -93,5 +91,4 @@
     <!-- String related to History -->
     <string name="title_activity_history">History</string>
     <string name="action_view_task">Task</string>
-
 </resources>

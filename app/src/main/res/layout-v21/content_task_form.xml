@@ -18,21 +18,24 @@
             android:id="@+id/new_task_name"
             android:hint="@string/new_task_name_hint"
             android:maxLines="1"
-            android:inputType="text"
+            android:inputType="textCapSentences"
             android:textSize="30sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="flagNoFullscreen"/>
+            android:imeOptions="flagNoFullscreen"
+            android:importantForAutofill="no" />
         <EditText
             android:id="@+id/new_task_description"
             android:hint="@string/new_task_description_hint"
             android:gravity="top|start"
             android:lines="3"
+            android:inputType="textMultiLine|textCapSentences"
             android:layout_marginTop="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/new_task_name"
-            android:imeOptions="flagNoFullscreen" />
+            android:imeOptions="flagNoFullscreen"
+            android:importantForAutofill="no" />
         <TextView
             android:id="@+id/new_task_priority_label"
             android:text="@string/new_task_priority"

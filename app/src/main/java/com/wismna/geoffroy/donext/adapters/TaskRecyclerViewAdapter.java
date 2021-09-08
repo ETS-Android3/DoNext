@@ -123,14 +123,14 @@ public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerVi
 
     public void setItems(List<Task> tasks) {
         this.mValues = tasks;
-        notifyDataSetChanged();
+        notifyItemRangeInserted(0, tasks.size() - 1);
     }
 
     public Task getItem(int position) {
         return mValues.get(position);
     }
 
-    class StandardViewHolder extends RecyclerView.ViewHolder {
+    static class StandardViewHolder extends RecyclerView.ViewHolder {
         final View mView;
         final TextView mIdView;
         final ImageView mIconView;

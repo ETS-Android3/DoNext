@@ -70,11 +70,11 @@ public class MainActivity extends AppCompatActivity {
             editor.apply();
 
             // Update the ViewPagerAdapter to refresh all tabs
-            ViewPager2 viewPager = getMainFragmentViewPager();
+            /*ViewPager2 viewPager = getMainFragmentViewPager();
             if (viewPager != null)
             {
                 viewPager.getAdapter().notifyDataSetChanged();
-            }
+            }*/
             return true;
         }
         return false;
