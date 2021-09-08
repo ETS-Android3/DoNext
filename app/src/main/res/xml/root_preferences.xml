@@ -19,13 +19,13 @@
             app:defaultValue="true" />
     </PreferenceCategory>
     <ListPreference
-        app:key="pref_conf_task_layout"
+        app:key="pref_conf_theme"
         app:title="@string/settings_theme"
         app:dialogTitle="@string/settings_theme"
         app:entries="@array/settings_theme"
-        app:entryValues="@array/settings_task_layout_values"
+        app:entryValues="@array/settings_theme_values"
         app:summary="%s"
-        app:defaultValue="1" />
+        app:defaultValue="-1" />
     <ListPreference
         app:key="pref_conf_max_lists"
         app:title="@string/settings_max_lists_label"

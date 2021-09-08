@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,10 +54,8 @@ public class MainFragment extends Fragment implements
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.fragment_main, container, false);
-        Toolbar toolbar = mView.findViewById(R.id.toolbar);
 
         AppCompatActivity activity = (AppCompatActivity) requireActivity();
-        activity.setSupportActionBar(toolbar);
         if (activity instanceof HistoryActivity) {
             ActionBar actionBar = activity.getSupportActionBar();
 

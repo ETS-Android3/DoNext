@@ -9,9 +9,7 @@
     tools:context=".activities.TodayActivity">
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
-        <include layout="@layout/toolbar" android:id="@+id/toolbar" />
+        android:layout_height="wrap_content">
         <TextView
             android:id="@+id/today_date"
             android:layout_width="match_parent"

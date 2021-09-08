@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_toEndOf="@id/task_icon"
         android:textSize="18sp"
+        android:textColor="?android:attr/textColorPrimary"
         android:textAppearance="?attr/textAppearanceListItem" />
     <ImageView
         android:id="@+id/task_cycle_icon"

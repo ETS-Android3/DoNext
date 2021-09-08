@@ -7,7 +7,9 @@
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout-w600dp/fragment_main.xml" value="0.17372134038800705" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/activity_history.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/activity_main.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/activity_settings.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/activity_today.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/content_about.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/content_task_form.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/content_tasklists.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/content_today_form.xml" value="0.24739583333333334" />
@@ -19,6 +21,8 @@
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/fragment_task_simple.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/fragment_tasklist.xml" value="0.20520833333333333" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/fragment_tasks.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/list_task_item.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/list_tasklist_item.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/settings_activity.xml" value="0.24375" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/layout/toolbar.xml" value="0.24739583333333334" />
         <entry key="..\:/Users/GeoffroyBONNEVILLE/source/repos/Autres/DoNext/app/src/main/res/menu/menu_common.xml" value="0.36666666666666664" />
