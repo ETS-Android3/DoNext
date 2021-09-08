@@ -24,8 +24,8 @@ import java.util.List;
 public class TaskRecyclerViewAdapter extends RecyclerView.Adapter<TaskRecyclerViewAdapter.StandardViewHolder> {
 
     private List<Task> mValues;
-    private boolean mIsToday;
-    private boolean mIsHistory;
+    private final boolean mIsToday;
+    private final boolean mIsHistory;
 
     public TaskRecyclerViewAdapter(List<Task> items, boolean isToday, boolean isHistory) {
         mValues = items;
